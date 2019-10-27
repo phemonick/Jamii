@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Auth from './screens/Auth';
+import {Login, GetStarted, SignUp} from './screens/Auth';
+import {LandingScreen} from './screens/Home';
 
-import { createStackNavigator } from 'react-navigation-stack';
+import {createStackNavigator} from 'react-navigation-stack';
 import {
   createSwitchNavigator,
   createAppContainer,
@@ -10,14 +11,20 @@ import {
 } from 'react-navigation';
 
 const AuthStack = createStackNavigator({
-  Auth,
+  GetStarted,
+  Login,
+  SignUp,
+});
+
+const AppStack = createStackNavigator({
+  LandingScreen,
 });
 
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthStack,
-      App: AuthStack,
+      App: AppStack,
       Auth: AuthStack,
     },
     {
@@ -25,4 +32,3 @@ export default createAppContainer(
     },
   ),
 );
-
