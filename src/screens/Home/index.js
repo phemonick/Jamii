@@ -5,7 +5,10 @@ import {AddEventScreen} from './Tabs/AddEvent';
 const LandingScreen = createBottomTabNavigator(
   {
     Home,
-    AddEventScreen,
+    Events: Home,
+    AddEvent: Home,
+    time: Home,
+    profile: Home,
   },
   {
     defaultNavigationOptions: ({navigation}) => ({
