@@ -42,6 +42,7 @@ export default function GetStarted(props) {
 const styles = StyleSheet.create({
   body: {
     alignItems: 'center',
+    height: '80%',
     justifyContent: 'space-between',
   },
   engine: {

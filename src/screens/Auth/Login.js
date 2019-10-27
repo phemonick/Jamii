@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+const axios = require('axios');
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,9 +9,29 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 
+
 export default function Login(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
+    async function loginAction() {
+        try{
+            let response = await axios.post('jamii-api.herokuapp.com/api/users/login',{
+                email,
+                password,
+              })
+            let user = await response;
+            await AsyncStorage.setItem('TOKEN_KEY', user.payload.token);
+            props.navigation.navigate('Home');
+        }
+        catch(error) {
+            setError("failed to login")
+        }
+    }
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -24,10 +45,17 @@ export default function Login(props) {
               <Text style={styles.description}>Please Login</Text>
               <View style={styles.inputContainer}>
                 <TextInput
-                  placeholder={'Email'}
+                  placeholder="joe@company.com"
+                  onChangeText={setEmail}
                   style={[styles.textInput, {marginBottom: 20}]}
                 />
-                <TextInput placeholder={'Password'} style={styles.textInput} />
+                <TextInput
+                  placeholder={'Password'}
+                  secureTextEntry
+                  onChangeText={setPassword}
+                  style={styles.textInput}
+                />
+                { error && <Text>{error}</Text>}
               </View>
               <View
                 style={{
@@ -36,7 +64,7 @@ export default function Login(props) {
                   justifyContent: 'space-between',
                   marginTop: 30,
                 }}>
-                <TouchableOpacity style={styles.loginBtn}>
+                <TouchableOpacity onPress={()=> loginAction()} style={styles.loginBtn}>
                   <Text
                     style={{
                       color: '#DDE2EB',
@@ -51,6 +79,7 @@ export default function Login(props) {
                   <Text style={{fontSize: 24}}> Create Account</Text>
                 </TouchableOpacity>
               </View>
+              
             </View>
           </View>
           <TouchableOpacity

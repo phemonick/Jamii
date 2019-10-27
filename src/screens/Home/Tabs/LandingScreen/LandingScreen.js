@@ -1,64 +1,58 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   StatusBar,
-  Image,
-  TextInput,
+  ScrollView,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 
+import {EventCard} from '../../../../components';
+
 export default function LandingScreen(props) {
+  const [featuredEvent, setFeaturedEvent] = useState([
+    {id: 1},
+    {id: 2},
+    {id: 3},
+    {id: 4},
+  ]);
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{flex: 1, padding: 20}}>
-        <View style={styles.body}>
-          <View style={{}}>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View style={styles.body}>
             <View>
               <Text style={styles.logo}> J </Text>
             </View>
-            <View style={styles.t}>
-              <Text style={styles.description}>Landing</Text>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  placeholder={'Email'}
-                  style={[styles.textInput, {marginBottom: 20}]}
-                />
-                <TextInput placeholder={'Password'} style={styles.textInput} />
+            <View style={styles.featuredEvent}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center'}}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold'}}>Featured events</Text>
+                <TouchableOpacity style={{backgroundColor: 'red', paddingLeft: 20, paddingRight: 20, height: 35, borderRadius: 5, justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{ fontSize: 16, color: '#fff'}}>See All</Text>
+                </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginTop: 30,
-                }}>
-                <TouchableOpacity style={styles.loginBtn}>
-                  <Text
-                    style={{
-                      color: '#DDE2EB',
-                      fontSize: 24,
-                      fontWeight: 'bold',
-                    }}>
-                    {'Login'}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('SignUp')}>
-                  <Text style={{fontSize: 24}}> Create Account</Text>
-                </TouchableOpacity>
+              <View>
+                <FlatList
+                  data={featuredEvent}
+                  renderItem={({item}) => <EventCard item={item} />}
+                  keyExtractor={item => item.id}
+                  horizontal={true}
+                />
               </View>
             </View>
+            <View style={{ marginTop: 40}}>
+              <Text style={{ fontSize: 26, fontWeight: 'bold', marginBottom: 20}}> My Next Event</Text>
+              <FlatList data={featuredEvent}
+                renderItem={({item}) => <EventCard item={item} />}
+                keyExtractor={item => item.id}
+               />
+            </View>
           </View>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={{color: '#DDE2EB', fontSize: 22}}>
-              {'skip'.toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );
@@ -67,7 +61,6 @@ export default function LandingScreen(props) {
 const styles = StyleSheet.create({
   body: {
     height: '95%',
-    justifyContent: 'space-between',
   },
   logo: {
     color: '#fff',
@@ -79,33 +72,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 20,
   },
-  description: {
-    marginTop: 20,
-    marginBottom: 40,
-    fontSize: 24,
-  },
-  inputContainer: {},
-  textInput: {
-    backgroundColor: '#DDE2EB',
-    height: 50,
-    fontSize: 18,
-    borderRadius: 5,
-  },
-  btn: {
-    paddingLeft: 60,
-    paddingRight: 60,
-    paddingTop: 15,
-    paddingBottom: 15,
-    borderRadius: 5,
-    backgroundColor: '#393443',
-    alignItems: 'center',
-  },
-  loginBtn: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 5,
-    backgroundColor: '#393443',
-  },
+  featuredEvent: {},
 });
